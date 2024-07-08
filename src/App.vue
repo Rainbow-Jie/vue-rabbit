@@ -1,0 +1,89 @@
+<script setup>
+// 导入
+import { storeToRefs } from 'pinia'
+// 从counter文件中引入userCounterStore方法
+import { userCounterStore } from './stores/counter'
+import { onMounted } from 'vue'
+
+// 执行方法得到仓库对象
+const counterStore = userCounterStore()
+
+// 解构赋值 , 就是把对象中的数据取出来方便使用 , 不需要再通过counterStore对象调用了 , 响应式丢失
+// const {count , doubleCount} = counterStore
+// 解构赋值
+const {count , doubleCount} = storeToRefs(counterStore)
+onMounted(()=>{
+  counterStore.getList()
+})
+</script>
+
+<template>
+    <button @click="counterStore.increment"> {{count}} </button>{{ doubleCount }}
+    <ul>
+      <li v-for="item in counterStore.list" :key="item.id">{{item.name}}</li>
+    </ul>
+</template>
+
+<style scoped lang="scss">
+header {
+  line-height: 1.5;
+  max-height: 100vh;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 2rem;
+}
+
+nav {
+  width: 100%;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+nav a.router-link-exact-active {
+  color: var(--color-text);
+}
+
+nav a.router-link-exact-active:hover {
+  background-color: transparent;
+}
+
+nav a {
+  display: inline-block;
+  padding: 0 1rem;
+  border-left: 1px solid var(--color-border);
+}
+
+nav a:first-of-type {
+  border: 0;
+}
+
+@media (min-width: 1024px) {
+  header {
+    display: flex;
+    place-items: center;
+    padding-right: calc(var(--section-gap) / 2);
+  }
+
+  .logo {
+    margin: 0 2rem 0 0;
+  }
+
+  header .wrapper {
+    display: flex;
+    place-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  nav {
+    text-align: left;
+    margin-left: -1rem;
+    font-size: 1rem;
+
+    padding: 1rem 0;
+    margin-top: 1rem;
+  }
+}
+</style>
