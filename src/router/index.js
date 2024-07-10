@@ -2,8 +2,11 @@
 // createWebHistory：创建history模式的路由
 
 import { createRouter, createWebHistory } from 'vue-router'
-import Layout from '@/views/Layout/index.vue'
-import Home from '@/views/Home/index.vue'
+import layout from '@/views/layout/index.vue'
+import login from '@/views/login/index.vue'
+import home from '@/views/home/index.vue'
+import category from '@/views/category/index.vue'
+
 
 
 const router = createRouter({
@@ -13,15 +16,22 @@ const router = createRouter({
     {
       //一级路由
       path: '/',
-      component: Layout,
-      children: [
-        //二级路由
+      component: layout,
+      children:[
         {
           path: '',
-          component: Home
+          component: home
+        },
+        {
+          path:'category',
+          component: category
         }
       ]
     },
+    {
+      path: '/login',
+      component: login
+    }
   ],
   // 路由滚动行为定制
   scrollBehavior () {

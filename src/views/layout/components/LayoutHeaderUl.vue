@@ -1,9 +1,14 @@
-<script setup lang="ts">
-//导入pinia存储对象：导航分类
-import { useCategoryStore } from '@/stores/categoryStore'
-//定义对象接收useCategoryStore中返回的内容
-const categoryStore =  useCategoryStore();
+<!--
+ * @Description: logo右边的小组件
+ * @Author: Zhenjie
+ * @LastEditTime: 2024-07-09 20:54:32
+ * @LastEditors: Zhenjie
+-->
 
+<script setup>
+import {useCategoryStore} from '@/stores/categoryStore'
+
+const categoryStore = useCategoryStore()
 
 </script>
 

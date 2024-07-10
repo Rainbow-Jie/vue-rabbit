@@ -1,27 +1,11 @@
 <script setup>
 // 导入
 import { storeToRefs } from 'pinia'
-// 从counter文件中引入userCounterStore方法
-import { userCounterStore } from './stores/counter'
-import { onMounted } from 'vue'
 
-// 执行方法得到仓库对象
-const counterStore = userCounterStore()
-
-// 解构赋值 , 就是把对象中的数据取出来方便使用 , 不需要再通过counterStore对象调用了 , 响应式丢失
-// const {count , doubleCount} = counterStore
-// 解构赋值
-const {count , doubleCount} = storeToRefs(counterStore)
-onMounted(()=>{
-  counterStore.getList()
-})
 </script>
 
 <template>
-    <button @click="counterStore.increment"> {{count}} </button>{{ doubleCount }}
-    <ul>
-      <li v-for="item in counterStore.list" :key="item.id">{{item.name}}</li>
-    </ul>
+  <RouterView></RouterView>
 </template>
 
 <style scoped lang="scss">

@@ -1,20 +1,25 @@
+/*
+ * @Description: 
+ * @Author: Zhenjie
+ * @LastEditTime: 2024-07-09 20:50:07
+ * @LastEditors: Zhenjie
+ */
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { getCategoryAPI } from "@/apis/nav"
-import { type NavCategoryData } from "@/apis/nav/types/nav"
+import { getCategoryAPI } from "@/apis/layout/layout"
 
 
 //定义导航类目存储器对象
-export const useCategoryStore = defineStore('category', () => {
+export const useCategoryStore = defineStore('categoryStore', () => {
     //数据
-    const categoryList = ref<NavCategoryData>()
+    const categoryList = ref([])
 
     //异步action函数
     const getCategory = async () => {
         //通过getCategoryAPI获取导航类目数据
-        const result = await getCategoryAPI()
+        const res = await getCategoryAPI()
         //把查询的导航类目数据，赋值给categoryList
-        categoryList.value = result.data.result
+        categoryList.value = res.result
     }
 
     //返回
