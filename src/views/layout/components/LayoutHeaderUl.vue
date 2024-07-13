@@ -1,7 +1,7 @@
 <!--
  * @Description: logo右边的小组件
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-09 20:54:32
+ * @LastEditTime: 2024-07-13 20:30:16
  * @LastEditors: Zhenjie
 -->
 
@@ -19,7 +19,7 @@ const categoryStore = useCategoryStore()
     </li>
     <!-- 使用v-for渲染页面 -->
     <li class="home" v-for="item in categoryStore.categoryList" :key="item.id">
-      <RouterLink to="/">{{ item.name }}</RouterLink>
+      <RouterLink :to="`/category/${item.id}`">{{ item.name }}</RouterLink>
     </li>
   </ul>
 </template>

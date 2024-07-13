@@ -1,3 +1,9 @@
+/*
+ * @Description: 
+ * @Author: Zhenjie
+ * @LastEditTime: 2024-07-13 20:29:06
+ * @LastEditors: Zhenjie
+ */
 // createRouter：创建router实例对象
 // createWebHistory：创建history模式的路由
 
@@ -23,7 +29,7 @@ const router = createRouter({
           component: home
         },
         {
-          path:'category',
+          path:'category/:id',
           component: category
         }
       ]
