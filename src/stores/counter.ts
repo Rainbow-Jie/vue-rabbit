@@ -1,7 +1,7 @@
 /*
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-08 20:54:24
+ * @LastEditTime: 2024-07-13 16:06:00
  * @LastEditors: Zhenjie
  */
 // 从pinia中导入创建仓库的函数defineStore
@@ -14,17 +14,6 @@ const API_URL = 'http://geek.itheima.net/v1_0/channels'
 export const userCounterStore = defineStore(
   "count",
   () => {
-    // 定义数据
-    const count = ref(1);
-
-    // 定义修改数据的方法
-    const increment = () => {
-      count.value++;
-    };
-
-    // 定义getter
-    let doubleCount = computed(() => count.value * 2);
-
       // 发起异步请求
     const list = ref([]);
     const getList = async () => {
@@ -33,7 +22,7 @@ export const userCounterStore = defineStore(
     };
 
     // 以对象形式返回（外部可以访问）
-    return { count, increment, doubleCount,list ,getList };
+    return { list ,getList };
   },
 
   { persist: true }

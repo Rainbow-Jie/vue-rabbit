@@ -1,3 +1,9 @@
+/*
+ * @Description: 
+ * @Author: Zhenjie
+ * @LastEditTime: 2024-07-13 16:32:32
+ * @LastEditors: Zhenjie
+ */
 // 定义懒加载插件
 import { useIntersectionObserver } from '@vueuse/core'
 
@@ -12,7 +18,6 @@ export const lazyPlugin = {
         const { stop } = useIntersectionObserver(
           el,
           ([{ isIntersecting }]) => {
-            console.log(isIntersecting)
             if (isIntersecting) {
               // 进入视口区域
               el.src = binding.value

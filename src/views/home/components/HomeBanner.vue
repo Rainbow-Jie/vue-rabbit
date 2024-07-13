@@ -1,7 +1,7 @@
 <!--
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-10 21:00:03
+ * @LastEditTime: 2024-07-13 16:30:03
  * @LastEditors: Zhenjie
 -->
 <script setup>
@@ -11,7 +11,6 @@ import { onMounted, ref } from 'vue'
 const bannerList = ref([])
 const getBanner = async () => {
   const res = await getBannerAPI()
-  console.log(res);
   bannerList.value = res.result
 }
 
