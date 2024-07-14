@@ -1,7 +1,7 @@
 <!--
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-14 08:51:29
+ * @LastEditTime: 2024-07-14 09:15:50
  * @LastEditors: Zhenjie
 -->
 <script setup>
@@ -10,6 +10,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { getBannerAPI } from '@/apis/home'
 import GoodsItem from '@/views/home/components/GoodsItem.vue'
+import { onBeforeRouteUpdate } from 'vue-router'
 
 const bannerList = ref([])
 const getBanner = async () => {
@@ -23,17 +24,20 @@ const getBanner = async () => {
 
 const categoryList = ref({})
 const route = useRoute()
-const getCategoryList = async () => {
-  const res = await getCategoryAPI(route.params.id)
-  console.log(res);
+const getCategoryList = async (id = route.params.id) => {
+  const res = await getCategoryAPI(id)
   categoryList.value = res.result
 }
 
 onMounted(() => {
-  getBanner()
   getCategoryList()
 })
-
+onBeforeRouteUpdate((to)=>{
+  getCategoryList(to.params.id)
+})
+onMounted(() => {
+  getBanner()
+})
 </script>
 
 <template>
