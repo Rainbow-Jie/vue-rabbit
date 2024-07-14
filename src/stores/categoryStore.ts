@@ -1,7 +1,7 @@
 /*
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-09 20:50:07
+ * @LastEditTime: 2024-07-14 10:50:46
  * @LastEditors: Zhenjie
  */
 import { defineStore } from 'pinia'
@@ -18,6 +18,8 @@ export const useCategoryStore = defineStore('categoryStore', () => {
     const getCategory = async () => {
         //通过getCategoryAPI获取导航类目数据
         const res = await getCategoryAPI()
+        console.log(res);
+        
         //把查询的导航类目数据，赋值给categoryList
         categoryList.value = res.result
     }
