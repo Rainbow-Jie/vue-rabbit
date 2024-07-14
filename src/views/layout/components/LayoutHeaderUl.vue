@@ -19,7 +19,7 @@ const categoryStore = useCategoryStore()
     </li>
     <!-- 使用v-for渲染页面 -->
     <li class="home" v-for="item in categoryStore.categoryList" :key="item.id">
-      <RouterLink :to="`/category/${item.id}`">{{ item.name }}</RouterLink>
+      <RouterLink active-class="active" :to="`/category/${item.id}`">{{ item.name }}</RouterLink>
     </li>
   </ul>
 </template>

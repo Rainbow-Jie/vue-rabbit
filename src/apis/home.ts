@@ -1,15 +1,20 @@
 /*
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-13 17:12:08
+ * @LastEditTime: 2024-07-13 21:11:44
  * @LastEditors: Zhenjie
  */
 import httpInstance from '@/utils/http'
 
 
-export function getBannerAPI() {
+export function getBannerAPI(params={}) {
+
+  const { distributtionSite = '1'} = params
     return httpInstance({
-        url: '/home/banner'
+        url: '/home/banner',
+        params: {
+          distributtionSite
+        }
     }) 
 }
 
