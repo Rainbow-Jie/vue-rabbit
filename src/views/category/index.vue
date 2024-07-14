@@ -1,7 +1,7 @@
 <!--
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-14 09:15:50
+ * @LastEditTime: 2024-07-14 14:41:39
  * @LastEditors: Zhenjie
 -->
 <script setup>
@@ -36,7 +36,7 @@ const {categoryList} = useCategory()
         <h3>全部分类</h3>
         <ul>
           <li v-for="i in categoryList.children" :key="i.id">
-            <RouterLink to="/">
+            <RouterLink :to="`/category/sub/${i.id}`">
               <img :src="i.picture" />
               <p>{{ i.name }}</p>
             </RouterLink>
