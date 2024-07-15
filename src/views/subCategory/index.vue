@@ -1,25 +1,53 @@
 <!--
  * @Description: 二级分类
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-14 15:10:52
+ * @LastEditTime: 2024-07-15 14:37:38
  * @LastEditors: Zhenjie
 -->
 <script setup>
-import { getCategoryFilterAPI } from '@/apis/category'
+import { getCategoryFilterAPI , getSubCategoryAPI } from '@/apis/category'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import GoodsItem from '../home/components/GoodsItem.vue'
 
 //获取面包屑导航数据
 const categoryData = ref({})
 const route = useRoute()
 const getCategoryData = async () =>{
     const res = await getCategoryFilterAPI(route.params.id)
-    console.log(res);
     categoryData.value = res.result
 }
 onMounted(()=>{
     getCategoryData()
 })
+
+//获取基础列表数据
+const goodList = ref([])
+
+//定义请求数据模型
+const reqData = ref({
+    ctaegoryid: route.params.id,
+    page:1,
+    pageSize:20,
+    sortField:'publishTime'
+})
+
+//异步请求
+const getGoodList = async()=>{
+    const res = await getSubCategoryAPI(reqData.value)
+    console.log(res);
+    goodList.value = res.result.items
+}
+
+onMounted(()=>{
+    getGoodList()
+})
+
+//tab切换回调
+const tabChange = ()=>{
+    reqData.page = 1
+    getGoodList()
+}
 
 </script>
 
@@ -35,13 +63,14 @@ onMounted(()=>{
       </el-breadcrumb>
     </div>
     <div class="sub-container">
-      <el-tabs>
+      <el-tabs v-model="reqData.sortField" @tab-change="tabChange">
         <el-tab-pane label="最新商品" name="publishTime"></el-tab-pane>
         <el-tab-pane label="最高人气" name="orderNum"></el-tab-pane>
         <el-tab-pane label="评论最多" name="evaluateNum"></el-tab-pane>
       </el-tabs>
       <div class="body">
          <!-- 商品列表-->
+          <GoodsItem v-for="good in goodList" :good="good" :key="good.id" />
       </div>
     </div>
   </div>
