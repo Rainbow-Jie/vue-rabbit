@@ -1,7 +1,7 @@
 /*
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-13 20:29:06
+ * @LastEditTime: 2024-07-15 15:49:55
  * @LastEditors: Zhenjie
  */
 // createRouter：创建router实例对象
@@ -13,6 +13,7 @@ import login from '@/views/login/index.vue'
 import home from '@/views/home/index.vue'
 import category from '@/views/category/index.vue'
 import subCategory from '@/views/subCategory/index.vue'
+import goods from '@/views/goods/index.vue'
 
 
 
@@ -36,6 +37,10 @@ const router = createRouter({
         {
           path:'category/sub/:id',
           component: subCategory
+        },
+        {
+          path:'detail/:id',
+          component: goods
         }
       ]
     },
