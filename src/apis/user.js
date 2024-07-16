@@ -11,7 +11,7 @@ import request from '@/utils/http'
 export const loginAPI = ({account,password}) =>{
     return request({
         url: '/login',
-        methed:'POST',
+        method:'POST',
         data:{
             account,
             password

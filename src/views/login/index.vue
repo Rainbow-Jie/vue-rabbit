@@ -3,7 +3,7 @@
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
-import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import {useUserStore} from '@/stores/user'
 
 const userStore = useUserStore()
@@ -54,7 +54,7 @@ const rules = {
 
 //获取表单实例进行统一校验
 const  formRef = ref(null)
-const router = useRoute()
+const router = useRouter()
 const doLogin = ()=>{
   const {account,password} = form.value
   formRef.value.validate(async (valid)=>{
