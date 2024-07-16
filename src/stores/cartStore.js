@@ -1,7 +1,7 @@
 /*
  * @Description: 封装购物车模块
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-16 20:33:56
+ * @LastEditTime: 2024-07-16 20:58:54
  * @LastEditors: Zhenjie
  */
 
@@ -47,6 +47,10 @@ export const useCartStore = defineStore('cart', () => {
             cartList.value.splice(index, 1)
         }
     }
+    //登出登录清楚购物车
+    const clearCart = ()=>{
+        cartList.value=[]
+    }
     //计算头部购物车
     const allCount = computed(() => {
         cartList.value.reduce((a, c) => a + c.count, 0)
@@ -90,7 +94,8 @@ export const useCartStore = defineStore('cart', () => {
         isAll,
         allCheck,
         selectCount,
-        selectPrice
+        selectPrice,
+        clearCart
     }
 }, {
     persist: true
