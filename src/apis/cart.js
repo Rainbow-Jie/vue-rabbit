@@ -34,3 +34,12 @@ export const delCartAPI = (ids) => {
   //获取购物车列表
   export const findCartListAPI = () => {
     return request({url: '/member/cart'})}
+
+    //合并购物车
+    export const mergeCartAPI = (data) => {
+      return request({
+        url: '/member/cart/merge',
+        method: 'POST',
+        data
+      })
+    }
