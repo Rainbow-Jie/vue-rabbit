@@ -1,6 +1,12 @@
 <script setup>
 
 import { ref } from 'vue';
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
+import { useRoute } from 'vue-router';
+import {useUserStore} from '@/stores/user'
+
+const userStore = useUserStore()
 //表单检验
 const form = ref({
     account: '',
@@ -13,6 +19,16 @@ const rules = {
         required: true,
         message: '用户名不能为空',
         trigger: 'blur'
+    },{
+        min:6,
+        max:20,
+        message: '用户名长度为6-20个字符',
+        trigger: 'blur'
+    },
+    {
+      pattern: /^[a-zA-Z]/,
+      message: '用户名必须以字母开头',
+      trigger: 'blur'
     }],
     password: [{
         required: true,
@@ -20,8 +36,8 @@ const rules = {
         trigger: 'blur'
     },{
         min:6,
-        max:14,
-        message: '密码长度为6-14个字符',
+        max:24,
+        message: '密码长度为6-24个字符',
         trigger: 'blur'
     }],
     agree: [{
@@ -38,10 +54,20 @@ const rules = {
 
 //获取表单实例进行统一校验
 const  formRef = ref(null)
+const router = useRoute()
 const doLogin = ()=>{
-  formRef.value.validate((valid)=>{
+  const {account,password} = form.value
+  formRef.value.validate(async (valid)=>{
     if(valid){
       // TODO LOGIN
+     await userStore.getUserInfo({account,password})
+     //1.提示用户
+     ElMessage({
+      type:'sucess',
+      message:'登陆成功',
+      //2.跳转首页
+      })
+      router.replace({path:'/'})
     }else{
 
     }
