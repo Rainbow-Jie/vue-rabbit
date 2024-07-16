@@ -14,6 +14,7 @@ import home from '@/views/home/index.vue'
 import category from '@/views/category/index.vue'
 import subCategory from '@/views/subCategory/index.vue'
 import goods from '@/views/goods/index.vue'
+import cartList from '@/views/cartList/index.vue'
 
 
 
@@ -41,6 +42,10 @@ const router = createRouter({
         {
           path:'detail/:id',
           component: goods
+        },
+        {
+          path:'cartlist',
+          component: cartList
         }
       ]
     },

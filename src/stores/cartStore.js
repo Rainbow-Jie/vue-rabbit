@@ -1,7 +1,7 @@
 //封装购物车木块模块
 
 import {defineStore} from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 
 export const useCartStore = defineStore('cart',()=>{
@@ -18,9 +18,24 @@ export const useCartStore = defineStore('cart',()=>{
         console.log(cartList);
            
     }
+    //删除购物车选项
+    const delCart = (skuId)=>{
+        const index = cartList.value.findIndex((item)=>{skuId===item.skuId})
+        cartList.value.splice(index,1)
+    }
+    //计算头部购物车
+    const allCount = computed(()=>{
+         cartList.value.reduce((a,c)=>{a + c.count},0)
+    })
+    const allPrice = computed(()=>{
+         cartList.value.reduce((a,c)=>{a + c.count*c.price},0)
+    })
     return {
         cartList,
-        addCart
+        allCount,
+        allPrice,
+        addCart,
+        delCart
     }
 },{
     persist:true
