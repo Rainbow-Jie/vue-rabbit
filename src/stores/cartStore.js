@@ -1,3 +1,9 @@
+/*
+ * @Description: 
+ * @Author: Zhenjie
+ * @LastEditTime: 2024-07-16 17:46:56
+ * @LastEditors: Zhenjie
+ */
 //封装购物车木块模块
 
 import {defineStore} from 'pinia'
@@ -30,12 +36,33 @@ export const useCartStore = defineStore('cart',()=>{
     const allPrice = computed(()=>{
          cartList.value.reduce((a,c)=>{a + c.count*c.price},0)
     })
+
+    //单选功能
+    const singleCheck = (skuId,selected)=>{
+        const item = cartList.value.find((item)=>item.skuId === skuId)
+        item.selected = selected
+    }
+
+    //全选
+    const isAll = computed(()=>{
+        cartList.value.every((item)=>{item.selected})
+    })
+    const allCheck = (selected)=>{
+        cartList.value.forEach(item=>{
+            item.selected = selected
+        })
+    }
+
+    
     return {
         cartList,
         allCount,
         allPrice,
         addCart,
-        delCart
+        delCart,
+        singleCheck,
+        isAll,
+        allCheck
     }
 },{
     persist:true
