@@ -1,7 +1,7 @@
 /*
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-15 15:49:55
+ * @LastEditTime: 2024-07-17 09:35:55
  * @LastEditors: Zhenjie
  */
 // createRouter：创建router实例对象
@@ -17,6 +17,7 @@ import goods from '@/views/goods/index.vue'
 import cartList from '@/views/cartList/index.vue'
 import checkout from '@/views/checkout/index.vue'
 import pay from '@/views/pay/index.vue'
+import PayBack from '@/views/pay/PayBack.vue'
 
 
 
@@ -56,6 +57,10 @@ const router = createRouter({
         {
           path:'pay',
           component: pay
+        },
+        {
+          path:'paycallback',
+          component: PayBack
         }
       ]
     },
