@@ -1,7 +1,7 @@
 <!--
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-16 11:07:42
+ * @LastEditTime: 2024-07-17 15:29:43
  * @LastEditors: Zhenjie
 -->
 <script setup>
@@ -29,8 +29,8 @@ const confirm = ()=>{
               </template>
             </el-popconfirm>
           </li>
-          <li><a href="javascript:;"><RouterLink to="/member/order">我的订单</RouterLink></a></li>
-          <li><a href="javascript:;" ><RouterLink to="/member/user">会员中心</RouterLink></a></li>
+          <li><RouterLink to="/member/order">我的订单</RouterLink></li>
+          <li><RouterLink to="/member/user">会员中心</RouterLink></li>
         </template>
         
         <template v-else>

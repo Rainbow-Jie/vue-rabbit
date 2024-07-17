@@ -67,6 +67,7 @@ const router = createRouter({
         {
           path:'member',
           component: member,
+          redirect:'member/user',
           children:[
             {
               path:'user',
