@@ -27,12 +27,17 @@ onMounted(()=>{
   getOrderList()
 })
 
+//tab切换
+const tabChange=(type)=>{
+  params.value.orderState = type
+  getOrderList()
+}
 
 </script>
 
 <template>
   <div class="order-container">
-    <el-tabs>
+    <el-tabs @tab-change="tabChange">
       <!-- tab切换 -->
       <el-tab-pane v-for="item in tabTypes" :key="item.name" :label="item.label" />
 
@@ -49,7 +54,7 @@ onMounted(()=>{
               <!-- 未付款，倒计时时间还有 -->
               <span class="down-time" v-if="order.orderState === 1">
                 <i class="iconfont icon-down-time"></i>
-                <b>付款截止: {{order.countdown}}</b>
+                <b>付款截止: {{order.countdown===-1?"超时":order.countdown+'秒'}}</b>
               </span>
             </div>
             <div class="body">
