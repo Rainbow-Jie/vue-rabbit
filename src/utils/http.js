@@ -1,7 +1,7 @@
 /*
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-16 11:28:51
+ * @LastEditTime: 2024-07-17 14:56:15
  * @LastEditors: Zhenjie
  */
 import axios from 'axios'
@@ -11,7 +11,7 @@ import  router  from '@/router';
 
 const httpInstance = axios.create({
     baseURL: 'http://pcapi-xiaotuxian-front-devtest.itheima.net',
-    timeout: 5000
+    timeout: 20000
 })
 
 //请求拦截器
