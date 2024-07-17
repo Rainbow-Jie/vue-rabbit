@@ -1,7 +1,7 @@
 /*
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-17 09:35:55
+ * @LastEditTime: 2024-07-17 10:25:40
  * @LastEditors: Zhenjie
  */
 // createRouter：创建router实例对象
@@ -18,7 +18,9 @@ import cartList from '@/views/cartList/index.vue'
 import checkout from '@/views/checkout/index.vue'
 import pay from '@/views/pay/index.vue'
 import PayBack from '@/views/pay/PayBack.vue'
-
+import member from '@/views/member/index.vue'
+import UserOrder from '@/views/member/components/UserOrder.vue'
+import UserInfo from '@/views/member/components/UserInfo.vue'
 
 
 const router = createRouter({
@@ -61,6 +63,20 @@ const router = createRouter({
         {
           path:'paycallback',
           component: PayBack
+        },
+        {
+          path:'member',
+          component: member,
+          children:[
+            {
+              path:'user',
+              component: UserInfo
+            },
+            {
+              path:'order',
+              component: UserOrder
+            }
+          ]
         }
       ]
     },

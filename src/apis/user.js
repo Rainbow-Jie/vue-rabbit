@@ -1,7 +1,7 @@
 /*
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-16 09:04:19
+ * @LastEditTime: 2024-07-17 14:32:07
  * @LastEditors: Zhenjie
  */
 //封装登录用户的相关接口函数
@@ -18,3 +18,13 @@ export const loginAPI = ({account,password}) =>{
         }
     })
 }
+
+
+export const getLikeListAPI = ({ limit = 4 }) => {
+    return request({
+      url:'/goods/relevant',
+      params: {
+        limit 
+      }
+    })
+  }
