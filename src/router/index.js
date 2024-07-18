@@ -21,6 +21,7 @@ import PayBack from '@/views/pay/PayBack.vue'
 import member from '@/views/member/index.vue'
 import UserOrder from '@/views/member/components/UserOrder.vue'
 import UserInfo from '@/views/member/components/UserInfo.vue'
+import register from '@/views/register/index.vue'
 
 
 const router = createRouter({
@@ -84,6 +85,10 @@ const router = createRouter({
     {
       path: '/login',
       component: login
+    },
+    {
+      path: '/register',
+      component: register
     }
   ],
   // 路由滚动行为定制

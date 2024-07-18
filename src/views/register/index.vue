@@ -1,18 +1,9 @@
 <script setup>
-
+import { registerAPI } from '@/apis/register'
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
 import { useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/userStore'
-
-const userStore = useUserStore()
-//登录表单检验
-const form = ref({
-  account: '',
-  password: '',
-  agree: true
-})
 
 const rules = {
   account: [{
@@ -40,11 +31,11 @@ const rules = {
     message: '密码长度为6-24个字符',
     trigger: 'blur'
   }],
-  phone: [{
+  mobile: [{
     required: true,
     message: '手机号不能为空',
     trigger: 'blur'
-  },{
+  }, {
     pattern: /^1[3-9]\d{9}$/,
     message: '手机号不合法',
     trigger: 'blur'
@@ -60,31 +51,36 @@ const rules = {
   }]
 }
 
-
-//获取表单实例进行统一校验
-const formRef = ref(null)
-const router = useRouter()
-const doLogin = () => {
-  const { account, password } = form.value
-  formRef.value.validate(async (valid) => {
+//注册
+const regForm = ref({
+  account: '',
+  mobile: '',
+  code: '',
+  password: '',
+  agree: true
+})
+const regFormRef = ref(null)
+const regRouter = useRouter()
+const doRegister = () => {
+  const { account, mobile, code, password } = regForm.value
+  regFormRef.value.validate(async (valid) => {
     if (valid) {
       // TODO LOGIN
-      await userStore.getUserInfo({ account, password })
+      const res = await registerAPI({ account, mobile, code, password })
+      console.log(res);
       //1.提示用户
       ElMessage({
         type: 'sucess',
-        message: '登陆成功',
-        //2.跳转首页
+        message: '注册成功',
+        //2.跳转登录
       })
-      router.replace({ path: '/' })
+      regRouter.replace({ path: '/login' })
     } else {
 
     }
   })
 }
 </script>
-
-
 <template>
   <div>
     <header class="login-header">
@@ -99,40 +95,48 @@ const doLogin = () => {
         </RouterLink>
       </div>
     </header>
-    <section class="login-section" >
+    <section class="login-section">
       <div class="wrapper">
         <nav>
-          <a href="javascript:;">账户登录</a>
+          <a href="javascript:;">账户注册</a>
         </nav>
         <div class="account-box">
           <div class="form">
-            <el-form ref="formRef" :model="form" :rules="rules" label-position="right" label-width="60px" status-icon>
-              <el-form-item prop="account" label="账户">
-                <el-input v-model="form.account" />
+            <el-form ref="regFormRef" :model="regForm" :rules="rules" label-position="right" label-width="80px"
+              status-icon>
+              <el-form-item prop="account" label="用户名" placeholder="请输入手机号">
+                <el-input v-model="regForm.account" />
               </el-form-item>
-              <el-form-item prop="password" label="密码">
-                <el-input v-model="form.password" />
+              <el-form-item prop="mobile" label="手机号" placeholder="请输入手机号">
+                <el-input v-model="regForm.mobile" />
+              </el-form-item>
+              <el-form-item prop="code" label="验证码" placeholder="请输入验证码">
+                <el-input v-model="regForm.code" />
+                <el-button type="primary" style="height: 32px" @click="sendCode">发送验证码</el-button>
+              </el-form-item>
+              <el-form-item prop="password" label="密码" placeholder="请输入密码">
+                <el-input v-model="regForm.password" />
+              </el-form-item>
+              <el-form-item prop="conPassword" label="确认密码" placeholder="请确认密码">
+                <el-input v-model="regForm.password" />
               </el-form-item>
               <el-form-item prop="agree" label-width="22px">
-                <el-checkbox size="large" v-model="form.agree">
+                <el-checkbox size="large" v-model="regForm.agree">
                   我已同意隐私条款和服务条款
                 </el-checkbox>
               </el-form-item>
-              <el-button size="large" class="subBtn" @click="doLogin">点击登录</el-button>
+              <el-button size="large" class="subBtn" @click="doRegister">注册</el-button>
               <div class="action">
                 <div class="url">
-                  <a href="javascript:;" @click="router.push('/reset')">忘记密码</a>
-                  <a href="javascript:;" @click="router.push('/register')">免费注册</a>
+                  <a href="javascript:;" @click="regRouter.push('/login')">已有账号? 去登录</a>
                 </div>
               </div>
             </el-form>
           </div>
-
         </div>
-
       </div>
-    </section>
 
+    </section>
     <footer class="login-footer">
       <div class="container">
         <p>
@@ -148,6 +152,7 @@ const doLogin = () => {
       </div>
     </footer>
   </div>
+
 </template>
 
 <style scoped lang='scss'>
@@ -197,7 +202,7 @@ const doLogin = () => {
 
 .login-section {
   background: url('@/assets/images/login-bg.png') no-repeat center / cover;
-  height: 488px;
+  height: 528px;
   position: relative;
 
   .wrapper {
@@ -205,7 +210,7 @@ const doLogin = () => {
     background: #fff;
     position: absolute;
     left: 50%;
-    top: 54px;
+    top: 6px;
     transform: translate3d(100px, 0, 0);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 
@@ -357,14 +362,14 @@ const doLogin = () => {
   }
 
   .action {
-    padding: 20px 40px;
+    padding: 10px 10px 0 70px;
     display: block;
     justify-content: space-between;
 
     .url {
       a {
         color: #999;
-        margin-left: 45px;
+        padding-left: 125px;
 
       }
     }

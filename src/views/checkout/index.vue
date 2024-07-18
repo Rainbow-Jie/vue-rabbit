@@ -20,6 +20,7 @@ onMounted(() => {
 })
 
 const showDialog = ref(false)
+const addDialog = ref(false)
 
 //选中地址激活状态
 const activeAddress = ref({})
@@ -29,6 +30,7 @@ const switchAddress = (item) => {
 //关闭弹窗
 const shotdown = () => {
     showDialog.value = false
+    addDialog.value = false
 }
 //更改收获地址为选中确认地址
 const confirm = () => {
@@ -36,6 +38,25 @@ const confirm = () => {
     //关闭弹窗
     shotdown()
 }
+//新增地址
+const newAddress = ref({
+    receiver: '',
+    contact: '',
+    fullLocation: '',
+    address: ''
+})
+
+const addAddress = () => {
+    if (newAddress.value.receiver && newAddress.value.contact && newAddress.value.fullLocation && newAddress.value.address) {
+        curAddress.value = newAddress.value
+        newAddress.value = ''
+        //关闭弹窗
+        shotdown()
+    } else {
+        alert("请输入所有收货信息！")
+    }
+}
+
 
 //创建订单
 const createOrder = async () => {
@@ -83,7 +104,7 @@ const createOrder = async () => {
                         </div>
                         <div class="action">
                             <el-button size="large" @click="showDialog = true">切换地址</el-button>
-                            <el-button size="large" @click="addFlag = true">添加地址</el-button>
+                            <el-button size="large" @click="addDialog = true">添加地址</el-button>
                         </div>
                     </div>
                 </div>
@@ -182,6 +203,30 @@ const createOrder = async () => {
         </template>
     </el-dialog>
     <!-- 添加地址 -->
+    <el-dialog v-model="addDialog" title="添加收货地址" width="30%" center>
+        <div class="addressWrapper">
+            <el-form class="form">
+                <el-form-item label="收货人">
+                    <el-input v-model="newAddress.receiver" />
+                </el-form-item>
+                <el-form-item label="联系方式">
+                    <el-input v-model="newAddress.contact" pattern="[0-9]{11}" />
+                </el-form-item>
+                <el-form-item label="选择地址">
+                    <el-input v-model="newAddress.fullLocation" />
+                </el-form-item>
+                <el-form-item label="详细地址">
+                    <el-input v-model="newAddress.address" />
+                </el-form-item>
+            </el-form>
+        </div>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="shotdown">取消</el-button>
+                <el-button type="primary" @click="addAddress">确定</el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
 
 <style scoped lang="scss">
@@ -202,6 +247,14 @@ const createOrder = async () => {
 
         .box-body {
             padding: 20px 0;
+        }
+
+        .form {
+            padding: 0;
+
+            input {
+                outline: none;
+            }
         }
     }
 }
