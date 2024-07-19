@@ -1,9 +1,12 @@
 <script setup>
 import { getCheckoutInfoAPI, createOrderAPI } from '@/apis/checkout'
 import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css'
 import { onMounted, ref } from 'vue';
 import { useCartStore } from '@/stores/cartStore';
-
+import { useAddressStore } from '@/stores/addressStore';
+const addressStore = useAddressStore()
 const cartStore = useCartStore()
 const router = useRouter()
 const checkInfo = ref({})  // 订单对象
@@ -28,7 +31,7 @@ const switchAddress = (item) => {
     activeAddress.value = item
 }
 //关闭弹窗
-const shotdown = () => {
+const shutdown = () => {
     showDialog.value = false
     addDialog.value = false
 }
@@ -36,7 +39,7 @@ const shotdown = () => {
 const confirm = () => {
     curAddress.value = activeAddress.value
     //关闭弹窗
-    shotdown()
+    shutdown()
 }
 //新增地址
 const newAddress = ref({
@@ -49,11 +52,13 @@ const newAddress = ref({
 const addAddress = () => {
     if (newAddress.value.receiver && newAddress.value.contact && newAddress.value.fullLocation && newAddress.value.address) {
         curAddress.value = newAddress.value
-        newAddress.value = ''
+        newAddress.value = {}
+        addressStore.addAddress(newAddress)
+        ElMessage.success("成功添加地址")
         //关闭弹窗
-        shotdown()
+        shutdown()
     } else {
-        alert("请输入所有收货信息！")
+        ElMessage.warning("请输入所有收货信息！")
     }
 }
 
@@ -83,6 +88,9 @@ const createOrder = async () => {
     //更新购物车
     cartStore.updateNewList()
 }
+
+const selectedTab = ref('')
+const selectedPayTab = ref('')
 
 </script>
 
@@ -143,15 +151,15 @@ const createOrder = async () => {
                 <!-- 配送时间 -->
                 <h3 class="box-title">配送时间</h3>
                 <div class="box-body">
-                    <a class="my-btn active" href="javascript:;">不限送货时间：周一至周日</a>
-                    <a class="my-btn" href="javascript:;">工作日送货：周一至周五</a>
-                    <a class="my-btn" href="javascript:;">双休日、假日送货：周六至周日</a>
+                    <a class="my-btn" :class="{ active: selectedTab === '' }" @click="selectedTab = ''" href="javascript:;">不限送货时间：周一至周日</a>
+                    <a class="my-btn" :class="{ active: selectedTab === 'tab1' }" @click="selectedTab = 'tab1'" href="javascript:;">工作日送货：周一至周五</a>
+                    <a class="my-btn" :class="{ active: selectedTab === 'tab2' }" @click="selectedTab = 'tab2'" href="javascript:;">双休日、假日送货：周六至周日</a>
                 </div>
                 <!-- 支付方式 -->
                 <h3 class="box-title">支付方式</h3>
                 <div class="box-body">
-                    <a class="my-btn active" href="javascript:;">在线支付</a>
-                    <a class="my-btn" href="javascript:;">货到付款</a>
+                    <a class="my-btn" :class="{ active: selectedPayTab === '' }" @click="selectedPayTab = ''" href="javascript:;">在线支付</a>
+                    <a class="my-btn" :class="{ active: selectedPayTab === '1' }" @click="selectedPayTab = '1'" href="javascript:;">货到付款</a>
                     <span style="color:#999">货到付款需付5元手续费</span>
                 </div>
                 <!-- 金额明细 -->
@@ -197,7 +205,7 @@ const createOrder = async () => {
         </div>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="shotdown">取消</el-button>
+                <el-button @click="shutdown">取消</el-button>
                 <el-button type="primary" @click="confirm">确定</el-button>
             </span>
         </template>
@@ -222,7 +230,7 @@ const createOrder = async () => {
         </div>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="shotdown">取消</el-button>
+                <el-button @click="shutdown">取消</el-button>
                 <el-button type="primary" @click="addAddress">确定</el-button>
             </span>
         </template>

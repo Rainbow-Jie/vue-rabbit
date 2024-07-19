@@ -1,7 +1,7 @@
 /*
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-17 10:25:40
+ * @LastEditTime: 2024-07-18 11:09:25
  * @LastEditors: Zhenjie
  */
 // createRouter：创建router实例对象
@@ -21,6 +21,7 @@ import PayBack from '@/views/pay/PayBack.vue'
 import member from '@/views/member/index.vue'
 import UserOrder from '@/views/member/components/UserOrder.vue'
 import UserInfo from '@/views/member/components/UserInfo.vue'
+import UserAddress from '@/views/member/components/UserAddress.vue'
 import register from '@/views/register/index.vue'
 
 
@@ -77,6 +78,10 @@ const router = createRouter({
             {
               path:'order',
               component: UserOrder
+            },
+            {
+              path:'address',
+              component: UserAddress
             }
           ]
         }

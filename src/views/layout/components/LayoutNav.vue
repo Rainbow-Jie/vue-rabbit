@@ -1,16 +1,18 @@
 <!--
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-17 15:29:43
+ * @LastEditTime: 2024-07-18 16:47:34
  * @LastEditors: Zhenjie
 -->
 <script setup>
 import {useUserStore } from '@/stores/userStore'
+import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 const userStore = useUserStore()
 const router = useRouter()
 const confirm = ()=>{
   userStore.clearUserInfo()
+  ElMessage.success("退出成功")
   router.push('/login')
 }
 </script>

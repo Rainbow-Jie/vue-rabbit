@@ -1,3 +1,9 @@
+<!--
+ * @Description: 
+ * @Author: Zhenjie
+ * @LastEditTime: 2024-07-18 20:54:54
+ * @LastEditors: Zhenjie
+-->
 <script setup>
 import {getOrderAPI} from '@/apis/pay'
 import { onMounted, ref } from 'vue'
@@ -30,7 +36,7 @@ onMounted(()=>{
         <p>支付方式：<span>支付宝</span></p>
         <p>支付金额：<span>¥{{ orderInfo.payMoney?.toFixed(2) }}</span></p>
         <div class="btn">
-          <el-button type="primary" style="margin-right:20px"><RouterLink to="/">查看订单</RouterLink></el-button>
+          <el-button type="primary" style="margin-right:20px"><RouterLink to="/member/order">查看订单</RouterLink></el-button>
           <el-button><RouterLink to="/">进入首页</RouterLink></el-button>
         </div>
         <p class="alert">

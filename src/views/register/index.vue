@@ -1,5 +1,5 @@
 <script setup>
-import { registerAPI } from '@/apis/register'
+import { registerAPI , getCodeAPI } from '@/apis/register'
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
@@ -48,6 +48,16 @@ const rules = {
         callback(new Error("请勾选协议"))
       }
     }
+  }],
+  conPassword: [{
+    validator: (rule, value, callback) => {
+      if (value == regForm.value.password) {
+        callback()
+      } else {
+        callback(new Error("两次密码不一致"))
+      }
+    },
+    trigger: 'blur'
   }]
 }
 
@@ -57,6 +67,7 @@ const regForm = ref({
   mobile: '',
   code: '',
   password: '',
+  conPassword: '',
   agree: true
 })
 const regFormRef = ref(null)
@@ -80,6 +91,11 @@ const doRegister = () => {
     }
   })
 }
+
+const sendCode = async() => {
+  const res = await getCodeAPI(regForm.value.mobile)
+  console.log(res);
+  }
 </script>
 <template>
   <div>
@@ -118,7 +134,7 @@ const doRegister = () => {
                 <el-input v-model="regForm.password" />
               </el-form-item>
               <el-form-item prop="conPassword" label="确认密码" placeholder="请确认密码">
-                <el-input v-model="regForm.password" />
+                <el-input v-model="regForm.conPassword" />
               </el-form-item>
               <el-form-item prop="agree" label-width="22px">
                 <el-checkbox size="large" v-model="regForm.agree">
@@ -137,7 +153,7 @@ const doRegister = () => {
       </div>
 
     </section>
-    <footer class="login-footer">
+    <footer class="register-footer">
       <div class="container">
         <p>
           <a href="javascript:;">关于我们</a>
@@ -236,7 +252,7 @@ const doRegister = () => {
   }
 }
 
-.login-footer {
+.register-footer {
   padding: 30px 0 50px;
   background: #fff;
 

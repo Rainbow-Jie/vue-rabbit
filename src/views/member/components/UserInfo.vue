@@ -36,8 +36,10 @@ const userStore = useUserStore()
         <p>安全设置</p>
       </a>
       <a href="javascript:;">
+        <RouterLink to="/member/address">
         <span class="iconfont icon-dw"></span>
         <p>地址管理</p>
+      </RouterLink>
       </a>
     </div>
   </div>

@@ -1,7 +1,7 @@
 /*
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-17 14:45:42
+ * @LastEditTime: 2024-07-19 10:53:22
  * @LastEditors: Zhenjie
  */
 import request from '@/utils/http'
@@ -17,5 +17,15 @@ export const getUserOrder = (params) => {
       url:'/member/order',
       method:'GET',
       params
+    })
+  }
+
+  export const cancelOrderAPI = (id) => {
+    return request({
+      url: `/member/order/${id}/cancel`,
+      method: 'PUT',
+      params:{
+        id
+      }
     })
   }

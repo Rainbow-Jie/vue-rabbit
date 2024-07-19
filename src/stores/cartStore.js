@@ -1,7 +1,7 @@
 /*
  * @Description: 封装购物车模块
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-16 20:58:54
+ * @LastEditTime: 2024-07-18 15:31:19
  * @LastEditors: Zhenjie
  */
 
@@ -52,20 +52,20 @@ export const useCartStore = defineStore('cart', () => {
         cartList.value=[]
     }
     //计算头部购物车
-    const allCount = computed(() => {
+    const allCount = computed(() => 
         cartList.value.reduce((a, c) => a + c.count, 0)
-    })
-    const allPrice = computed(() => {
+    )
+    const allPrice = computed(() => 
         cartList.value.reduce((a, c) => a + c.count * c.price, 0)
-    })
+    )
     //计算购物车已选数据渲染
-    const selectCount = computed(() => {
+    const selectCount = computed(() => 
         cartList.value.filter(item => item.selected).reduce((a, c) => a + c.count, 0)
-    })
+    )
 
-    const selectPrice = computed(() => {
+    const selectPrice = computed(() => 
         cartList.value.filter(item => item.selected).reduce((a, c) => a + c.count * c.price, 0)
-    })
+    )
 
     //单选功能
     const singleCheck = (skuId, selected) => {

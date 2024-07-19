@@ -1,12 +1,12 @@
 <!--
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-13 20:26:50
+ * @LastEditTime: 2024-07-18 19:42:28
  * @LastEditors: Zhenjie
 -->
 
 <template>
-    <RouterLink to="/" class="goods-item">
+    <RouterLink to="/detail" class="goods-item">
         <img v-img-lazy="good.picture" alt="" />
         <p class="name ellipsis">{{ good.name }}</p>
         <p class="desc ellipsis">{{ good.desc }}</p>

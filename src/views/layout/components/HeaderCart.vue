@@ -8,8 +8,8 @@
 import { useCartStore } from '@/stores/cartStore';
 
 
-
 const cartStore = useCartStore()
+
 
 </script>
 

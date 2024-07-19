@@ -1,6 +1,7 @@
 <script setup>
-import { getUserOrder } from '@/apis/order'
+import { getUserOrder, cancelOrderAPI } from '@/apis/order'
 import { onMounted, ref } from 'vue';
+import { ElLoading } from 'element-plus'
 // tab列表
 const tabTypes = [
   { name: "all", label: "全部订单" },
@@ -23,9 +24,15 @@ const total = ref(0)
 
 
 const getOrderList = async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: 'Loading',
+    background: 'rgba(0,0,0,0.7)'
+  })
   const res = await getUserOrder(params.value)
   orderList.value = res.result.items
   total.value = res.result.counts
+  loading.close()
 }
 
 onMounted(() => {
@@ -46,21 +53,39 @@ const pageChange = (page) => {
 
 // 创建格式化函数
 const fomartPayState = (payState) => {
-    const stateMap = {
-      1: '待付款',
-      2: '待发货',
-      3: '待收货',
-      4: '待评价',
-      5: '已完成',
-      6: '已取消'
-    }
-    return stateMap[payState]
+  const stateMap = {
+    1: '待付款',
+    2: '待发货',
+    3: '待收货',
+    4: '待评价',
+    5: '已完成',
+    6: '已取消'
   }
+  return stateMap[payState]
+}
+
+const cancelOrder = async (orderId) => {
+  const res = await cancelOrderAPI(orderId)
+  // 请求成功后，更新订单列表
+  if (res.success) {
+    // 从订单列表中找到对应的订单，并将其状态设置为已取消
+    const index = orderList.value.findIndex((order) => order.id === orderId);
+    if (index !== -1) {
+      orderList.value[index].orderState = 6;
+    }
+    const res = await getUserOrder(params.value)
+    orderList.value = res.result.items
+  } else {
+    // 请求失败，处理错误情况
+    ElMessage.warning("取消订单失败")
+  }
+}
+
 
 </script>
 
 <template>
-  <div class="order-container">
+  <div class="order-container" v-loading="loading">
     <el-tabs @tab-change="tabChange">
       <!-- tab切换 -->
       <el-tab-pane v-for="item in tabTypes" :key="item.name" :label="item.label" />
@@ -78,7 +103,7 @@ const fomartPayState = (payState) => {
               <!-- 未付款，倒计时时间还有 -->
               <span class="down-time" v-if="order.orderState === 1">
                 <i class="iconfont icon-down-time"></i>
-                <b>付款截止: {{ order.countdown === -1 ? "超时" : order.countdown + '秒' }}</b>
+                <b>付款截止: {{ order.countdown }}</b>
               </span>
             </div>
             <div class="body">
@@ -102,7 +127,7 @@ const fomartPayState = (payState) => {
                 </ul>
               </div>
               <div class="column state">
-                <p>{{fomartPayState(order.orderState) }}</p>
+                <p>{{ fomartPayState(order.orderState) }}</p>
                 <p v-if="order.orderState === 3">
                   <a href="javascript:;" class="green">查看物流</a>
                 </p>
@@ -132,7 +157,7 @@ const fomartPayState = (payState) => {
                 <p v-if="[4, 5].includes(order.orderState)">
                   <a href="javascript:;">申请售后</a>
                 </p>
-                <p v-if="order.orderState === 1"><a href="javascript:;">取消订单</a></p>
+                <p v-if="order.orderState === 1"><a href="javascript:;" @click="cancelOrder(order.id)">取消订单</a></p>
               </div>
             </div>
           </div>

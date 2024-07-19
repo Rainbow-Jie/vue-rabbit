@@ -10,10 +10,16 @@ const route = useRoute()
 //获取订单数据内容
 const payInfo = ref({})
 const getPayInfo = async ()=>{
+  const loading = ElLoading.service({
+    lock:true,
+    text:'Loading',
+    background: 'rgba(0,0,0,0.7)'
+  })
   const res = await getOrderAPI(route.query.id)
   payInfo.value = res.result
   //初始化倒数计时
   start(res.result.countdown)
+  loading.close()
 }
 
 onMounted(()=>{
@@ -31,7 +37,7 @@ const payUrl = `${baseURL}pay/aliPay?orderId=${route.query.id}&redirect=${redire
 
 
 <template>
-  <div class="xtx-pay-page">
+  <div class="xtx-pay-page" v-loading="loading">
     <div class="container">
       <!-- 付款信息 -->
       <div class="pay-info">

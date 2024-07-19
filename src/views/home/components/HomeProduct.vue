@@ -1,7 +1,7 @@
 <!--
  * @Description: 
  * @Author: Zhenjie
- * @LastEditTime: 2024-07-13 20:20:55
+ * @LastEditTime: 2024-07-18 19:43:41
  * @LastEditors: Zhenjie
 -->
 <script setup>
@@ -13,6 +13,7 @@ import GoodsItem from './GoodsItem.vue'
 const goodList = ref([]);
 const getGoodList = async () => {
     const res = await getGoodsAPI();
+    console.log(res);
     goodList.value = res.result;
 }
 

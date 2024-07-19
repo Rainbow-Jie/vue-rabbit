@@ -5,13 +5,20 @@ import { useRoute } from 'vue-router'
 import DetailHot from '@/views/goods/components/DetailHot.vue'
 import { ElMessage } from 'element-plus'
 import { useCartStore } from '@/stores/cartStore'
+import { ElLoading } from 'element-plus'
 
 const cartStore = useCartStore()
 const goods = ref({})
 const route = useRoute()
 const getGoods = async()=>{
+  const loading = ElLoading.service({
+    lock:true,
+    text:'Loading',
+    background: 'rgba(0,0,0,0.7)'
+  })
    const res = await getDetail(route.params.id)
    goods.value = res.result
+   loading.close()
 }
 
 onMounted(()=>getGoods())
@@ -40,6 +47,7 @@ const addCart = ()=>{
       attrsText: skuObj.specsText,
       selected: true
     })
+    ElMessage.success('添加购物车成功')
   }else{
     //未选择商品规格
     ElMessage.warning('请选择规格')
@@ -49,7 +57,7 @@ const addCart = ()=>{
 
 <template>
   <div class="xtx-goods-page">
-    <div class="container" v-if="goods.details">
+    <div class="container" v-if="goods.details" v-loading="loading">
       <div class="bread-container">
         <el-breadcrumb separator=">">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -117,7 +125,7 @@ const addCart = ()=>{
               <!-- sku组件 -->
               <XtxSku :goods="goods" @change="skuChange"/>
               <!-- 数据组件 -->
-              <el-input-number v-model="count"  @change="countChange"></el-input-number>
+              <el-input-number v-model="count"  @change="countChange" min = 1></el-input-number>
               <!-- 按钮组件 -->
               <div>
                 <el-button size="large" class="btn" @click="addCart">

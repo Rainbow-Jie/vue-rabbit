@@ -1,3 +1,9 @@
+<!--
+ * @Description: 
+ * @Author: Zhenjie
+ * @LastEditTime: 2024-07-18 11:03:42
+ * @LastEditors: Zhenjie
+-->
 <script setup> </script>
 
 
@@ -8,6 +14,7 @@
         <h4>我的账户</h4>
         <div class="links">
           <RouterLink to="/member/user">个人中心</RouterLink>
+          <RouterLink to="/member/address">地址管理</RouterLink>
         </div>
         <h4>交易管理</h4>
         <div class="links">

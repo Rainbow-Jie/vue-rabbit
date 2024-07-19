@@ -1,11 +1,15 @@
 <script setup>
-
+import { mobileLoginAPI } from '@/apis/user'
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus'
 import 'element-plus/theme-chalk/el-message.css'
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/userStore'
+import { useCartStore } from '@/stores/cartStore'
+import { mergeCartAPI } from '@/apis/cart'
+import {getCodeAPI}  from '@/apis/register'
 
+const cartStore = useCartStore()
 const userStore = useUserStore()
 //登录表单检验
 const form = ref({
@@ -44,7 +48,7 @@ const rules = {
     required: true,
     message: '手机号不能为空',
     trigger: 'blur'
-  },{
+  }, {
     pattern: /^1[3-9]\d{9}$/,
     message: '手机号不合法',
     trigger: 'blur'
@@ -71,17 +75,75 @@ const doLogin = () => {
       // TODO LOGIN
       await userStore.getUserInfo({ account, password })
       //1.提示用户
-      ElMessage({
-        type: 'sucess',
-        message: '登陆成功',
-        //2.跳转首页
-      })
+      ElMessage.success('登陆成功')
       router.replace({ path: '/' })
     } else {
 
     }
   })
 }
+
+const mobileRules = {
+  mobile: [{
+    required: true,
+    message: '手机号不能为空',
+    trigger: 'blur'
+  }, {
+    pattern: /^1[3-9]\d{9}$/,
+    message: '手机号不合法',
+    trigger: 'blur'
+  }],
+  code: [{
+    required: true,
+    message: '验证码不能为空',
+    trigger: 'blur'
+  }],
+  agree: [{
+    validator: (rule, value, callback) => {
+      if (value) {
+        callback()
+      } else {
+        callback(new Error("请勾选协议"))
+      }
+    }
+  }]
+}
+const form1Ref = ref(null)
+const mobileForm = ref({
+  mobile: '',
+  code: '',
+  agree: true
+})
+const doMObileLogin = () => {
+  const { mobile, code } = mobileForm.value
+  form1Ref.value.validate(async (valid) => {
+    if (valid) {
+      const res = await mobileLoginAPI({ mobile, code })
+      console.log(res);
+      // TODO LOGIN
+      userInfo.value = res.result
+      await mergeCartAPI(cartStore.cartList.map(item => {
+        return {
+          skuId: item.skuId,
+          selected: item.selected,
+          count: item.count
+        }
+      }))
+      cartStore.updateNewList()
+      //提示用户
+      ElMessage.success('注册成功')
+      router.replace({ path: '/login' })
+    } else {
+
+    }
+  })
+}
+
+const sendCode = async () => {
+  const res = await getCodeAPI(mobileForm.value.mobile)
+  console.log(res);
+}
+const tab = ref(0);
 </script>
 
 
@@ -99,10 +161,16 @@ const doLogin = () => {
         </RouterLink>
       </div>
     </header>
-    <section class="login-section" >
-      <div class="wrapper">
+    <section class="login-section">
+      <div class="wrapper" v-if="tab === 0">
         <nav>
-          <a href="javascript:;">账户登录</a>
+          <!--切换 -->
+          <el-button type="info" @click="tab = 0">
+             账号登录 
+          </el-button>
+          <el-button type="info" @click="tab = 1">
+            手机号登录
+          </el-button>
         </nav>
         <div class="account-box">
           <div class="form">
@@ -121,7 +189,7 @@ const doLogin = () => {
               <el-button size="large" class="subBtn" @click="doLogin">点击登录</el-button>
               <div class="action">
                 <div class="url">
-                  <a href="javascript:;" @click="router.push('/reset')">忘记密码</a>
+                  <a href="javascript:;" @click="router.push('/reset'), ElMessage.error('功能未实现')">忘记密码</a>
                   <a href="javascript:;" @click="router.push('/register')">免费注册</a>
                 </div>
               </div>
@@ -131,7 +199,47 @@ const doLogin = () => {
         </div>
 
       </div>
+
+      <div class="wrapper" v-else>
+        <nav>
+          <!--切换 -->
+          <el-button type="info" @click="tab = 0">
+            账号登录
+          </el-button>
+          <el-button type="info" @click="tab = 1">
+             手机号登录 
+          </el-button>
+        </nav>
+        <div class="account-box">
+          <div class="form">
+            <el-form ref="form1Ref" :model="mobileForm" :rules="mobileRules" label-position="right" label-width="75px"
+              status-icon>
+              <el-form-item prop="mobile" label="手机号">
+                <el-input v-model="mobileForm.mobile" />
+              </el-form-item>
+              <el-button type="primary" style="height: 32px; margin-left: 76px;margin-bottom:5px"
+                @click="sendCode">发送验证码</el-button>
+              <el-form-item prop="code" label="验证码">
+                <el-input v-model="mobileForm.code" />
+              </el-form-item>
+              <el-form-item prop="agree" label-width="22px">
+                <el-checkbox size="large" v-model="mobileForm.agree">
+                  我已同意隐私条款和服务条款
+                </el-checkbox>
+              </el-form-item>
+              <el-button size="large" class="subBtn" @click="doMObileLogin">点击登录</el-button>
+              <div class="action">
+                <div class="url">
+                  <a href="javascript:;" @click="router.push('/reset'), ElMessage.error('功能未实现')">忘记密码</a>
+                  <a href="javascript:;" @click="router.push('/register')">免费注册</a>
+                </div>
+              </div>
+            </el-form>
+          </div>
+        </div>
+      </div>
     </section>
+
 
     <footer class="login-footer">
       <div class="container">
@@ -212,21 +320,20 @@ const doLogin = () => {
     nav {
       font-size: 14px;
       height: 55px;
-      margin-bottom: 20px;
       border-bottom: 1px solid #f5f5f5;
       display: flex;
-      padding: 0 40px;
+      padding: 10px 80px;
       text-align: right;
       align-items: center;
 
-      a {
-        flex: 1;
-        line-height: 1;
-        display: inline-block;
-        font-size: 18px;
-        position: relative;
-        text-align: center;
-      }
+      // a {
+      //   flex: 1;
+      //   line-height: 1;
+      //   display: inline-block;
+      //   font-size: 18px;
+      //   position: relative;
+      //   text-align: center;
+      // }
     }
   }
 }
